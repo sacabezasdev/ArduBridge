@@ -10,16 +10,15 @@ return new class extends Migration {
     {
         Schema::create('measurements', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->ulid('device_id');
-            $table->string('metric');                 // e.g., "distance_cm"
-            $table->double('value')->nullable();      // numeric value if applicable
-            $table->string('unit')->nullable();       // "cm","C","%"
-            $table->timestampTz('recorded_at')->index(); // when Arduino measured
-            $table->json('payload')->nullable();      // raw body (we'll upgrade to JSONB)
-            $table->timestampsTz();
+            $table->char('device_id', 26); // ULID FK
+            $table->string('metric');
+            $table->decimal('value', 10, 3);
+            $table->string('unit')->nullable();
+            $table->timestampTz('recorded_at');
+            $table->json('payload')->nullable();
+            $table->timestamps();
 
             $table->foreign('device_id')->references('id')->on('devices')->cascadeOnDelete();
-            $table->index(['device_id', 'metric', 'recorded_at']);
         });
 
         // Ensure payload uses JSONB (better indexing/operators). On Postgres,

@@ -9,11 +9,11 @@ return new class extends Migration {
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->string('name')->index();             // friendly label
-            $table->string('slug')->unique();            // for URLs/dashboard
-            $table->string('api_key')->unique();         // simple device auth
-            $table->json('meta')->nullable();            // location, notes, etc.
-            $table->timestampsTz();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->string('api_key')->unique();
+            $table->json('meta')->nullable();
+            $table->timestamps();
         });
     }
     public function down(): void

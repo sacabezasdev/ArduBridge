@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+use App\Models\Device;
 
 class DeviceSeeder extends Seeder
 {
@@ -12,13 +13,14 @@ class DeviceSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Device::updateOrCreate(
+        // Let HasUlids handle ID generation automatically.
+        // Only create if it doesn't already exist by slug.
+        Device::firstOrCreate(
             ['slug' => 'arduino-01'],
             [
-                'id' => (string) \Illuminate\Support\Str::ulid(),
                 'name' => 'Arduino #01',
                 'api_key' => 'DEVKEY-CHANGE-ME',
-                'meta' => ['location' => 'Lab shelf']
+                'meta' => ['location' => 'Lab shelf'],
             ]
         );
     }
