@@ -8,7 +8,8 @@
     "ext-json": "*",
     "ext-mbstring": "*",
     "ext-pdo": "*",
-
+    "backpack/crud": "^6.8",
+    "backpack/theme-tabler": "^1.2",
     "guzzlehttp/guzzle": "^7.8",
     "laravel/framework": "^11.0",
     "laravel/sanctum": "^4.0",
@@ -16,6 +17,7 @@
     "symfony/uid": "^7.0"
   },
   "require-dev": {
+    "backpack/generators": "^4.0",
     "fakerphp/faker": "^1.23",
     "laravel/sail": "^1.30",
     "mockery/mockery": "^1.6",
