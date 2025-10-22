@@ -24,4 +24,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/health', HealthController::class);
 
 Route::post('/ingest', [IngestController::class, 'store']);        // Arduino → API
-Route::get('/devices/{device}/measurements', [MeasurementsController::class, 'index']); // dashboard
+Route::get('/devices/{device:slug}/measurements', [MeasurementsController::class, 'index']); // dashboard
