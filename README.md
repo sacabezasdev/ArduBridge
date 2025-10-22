@@ -49,3 +49,27 @@ DB_PASSWORD=strongpassword
 php artisan migrate
 php artisan serve --host=0.0.0.0 --port=8000
 ```
+
+# Example calls
+
+## Arduino → API (HTTP POST)
+
+```bash
+curl -X POST http://localhost:8000/api/ingest \
+  -H "Content-Type: application/json" \
+  -H "X-Device-Key: DEVKEY-CHANGE-ME" \
+  -d '{
+    "metric": "distance_cm",
+    "value": 123.4,
+    "unit": "cm",
+    "recorded_at": "2025-10-21T23:45:00Z",
+    "payload": { "raw_echo_us": 3600, "vbat": 4.98 }
+  }'
+```
+
+## Dashboard → API (GET)
+
+```bash
+# latest distance measurements since the last hour:
+curl "http://localhost:8000/api/devices/arduino-01/measurements?metric=distance_cm&since=2025-10-21T22:45:00Z"
+```
