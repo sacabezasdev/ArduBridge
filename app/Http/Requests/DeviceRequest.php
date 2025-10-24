@@ -49,7 +49,10 @@ class DeviceRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255',
+            'api_key' => 'nullable|string|max:255',
+            'meta' => 'nullable|array',     // or maybe 'nullable|json' depending on how the field returns data
         ];
     }
 }

@@ -53,6 +53,36 @@ class DeviceCrudController extends CrudController
          */
     }
 
+    protected function setupShowOperation()
+    {
+        // reuse your list columns if you want, then tweak; or declare explicitly
+        // $this->setupListOperation();
+
+        // other columns ...
+        CRUD::addColumn(['name' => 'name', 'type' => 'text']);
+        CRUD::addColumn(['name' => 'slug', 'type' => 'text']);
+        CRUD::addColumn(['name' => 'api_key', 'type' => 'text']);
+
+        // Pretty JSON for `meta`
+        CRUD::addColumn([
+            'name' => 'meta',
+            'label' => 'Meta',
+            'type' => 'closure',
+            'escaped' => false, // we'll return HTML
+            'function' => function ($entry) {
+                $data = $entry->meta;
+                $json = is_array($data)
+                    ? json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+                    : (is_string($data) ? $data : json_encode($data));
+                // simple <pre> with monospace & wrap
+                $html = '<pre style="white-space:pre-wrap;word-break:break-word;margin:0">' .
+                    e($json) .
+                    '</pre>';
+                return $html;
+            },
+        ]);
+    }
+
     /**
      * Define what happens when the Create operation is loaded.
      * 
@@ -63,6 +93,15 @@ class DeviceCrudController extends CrudController
     {
         CRUD::setValidation(DeviceRequest::class);
         CRUD::setFromDb(); // set fields from db columns.
+
+        $this->crud->addField([
+            'name' => 'meta',       // bind to your `meta` column
+            'label' => 'Meta (JSON)',
+            'type' => 'json',       // use the json editor field type
+            'view_namespace' => 'json-field-for-backpack::fields',
+            'modes' => ['form', 'tree', 'code'],  // optional config
+            'default' => [],  // optional: default JSON if none exists
+        ]);
 
         /**
          * Fields can be defined using the fluent syntax:
